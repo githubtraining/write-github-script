@@ -1,0 +1,18 @@
+title: write-github-script
+description: >-
+  This course covers how to use GitHub Script to quickly use octokit/rest in a
+  GitHub Actions workflow.
+template:
+  repo: write-github-script-template
+  name: write-github-script
+before:
+  - type: createIssue
+    title: Welcome!
+    body: new-issue.md
+steps:
+  - title: First step
+    description: The first step in your course
+    event: issues.assigned
+    link: '{{ repoUrl }}'
+    actions:
+      - type: closeIssue
