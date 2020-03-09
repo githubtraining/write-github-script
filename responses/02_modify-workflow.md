@@ -28,13 +28,13 @@ documentation.
        steps:
          - uses: actions/github-script@0.8.0
            with:
-             github-token: ${{secrets.GITHUB_TOKEN}}
+             github-token: {% raw %}${{secrets.GITHUB_TOKEN}}{% endraw %}
              script: |
                github.issues.createComment({
                  issue_number: context.issue.number,
                  owner: context.repo.owner,
                  repo: context.repo.repo,
-                 body: '🎉 You've created this issue comment using GitHub Script!!!'
+                 body: "🎉 You've created this issue comment using GitHub Script!!!"
                })
    ```
 

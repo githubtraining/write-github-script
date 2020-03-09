@@ -88,7 +88,6 @@ steps:
           actionsUrl: "%payload.repository.html_url%/actions"
       - type: respond
         with: 02_modify-workflow.md
-        issue: Create my-workflow.yml
         data:
           workflowFile: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/.github/workflows/my-workflow.yml"
 
@@ -127,7 +126,6 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: Start here!
         with: 03_create-an-issue.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
