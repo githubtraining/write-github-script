@@ -6,13 +6,20 @@ template:
   repo: write-github-script-template
   name: write-github-script
 before:
+  - type: updateBranchProtection
   - type: createIssue
     title: Start here!
-    body: 01_welcome-issue.md
+    body: 00_welcome-issue.md
     action_id: welcomeIssue
   - type: respond
+    with: 00_explain-gh-script.md
     issue: "%actions.welcomeIssue.data.number%"
-    with: 01_welcome-activity.md
+  - type: respond
+    with: 00_octokit-comparison.md
+    issue: "%actions.welcomeIssue.data.number%"
+  - type: respond
+    issue: "%actions.welcomeIssue.data.number%"
+    with: 00_welcome-activity.md
     data:
       quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml&workflow_template=blank"
       actionsUrl: "%payload.repository.html_url%/actions/new"
@@ -21,7 +28,7 @@ steps:
   - title: Setup a workflow file
     description: Create a pull request to add a workflow
     event: pull_request
-    link: "{{ repoUrl }}/issues/%payload.pull_request.number%"
+    link: "{{ repoUrl }}/issues/1"
     actions:
       - type: gate
         gates:
@@ -82,52 +89,43 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: Start here!
+      - type: removeBranchProtection
       - type: respond
-        with: 01_explain-workflow.md
+        with: 01_merg-workflow.md
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
-      - type: respond
-        with: 02_modify-workflow.md
-        data:
-          workflowFile: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/.github/workflows/my-workflow.yml"
 
   - title: Open an issue to trigger GitHub Script workflow
     description: Use GitHub script to comment when an issue is opened
-    event: pull_request.synchronize
-    link: "{{ repoUrl }}/issues/%payload.pull_request.number%"
+    event: pull_request.closed
+    link: "{{ repoUrl }}/pull/2"
     actions:
-      #######################################################
-      # Validate the filepath for the my-workflow.yml file
-      # get tree
-      - type: getTree
-        action_id: isInTree
-        recursive: true
-        sha: "%payload.pull_request.head.sha%"
-      # check for a file in a tree
-      - type: gate
-        left: "%actions.isInTree.data.tree%"
-        operator: includes
-        right: "path:.github/workflows/my-workflow.yml"
-        else:
-          # if file isn't where expected find true location
-          - type: findInTree
-            path: my-workflow.yml
-            tree: "%actions.isInTree.data.tree%"
-            # multiple: true
-            action_id: fileLocation
-          # help user with proper file location
-          - type: respond
-            with: e-wrong-file-location.md
-            data:
-              haveFile: "%actions.fileLocation.path%"
-              needFile: ".github/actions/cat-facts/action.yml"
-              editLink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/%actions.fileLocation.path%"
-              fileName: my-workflow.yml
-        # End filepath verification
-        #######################################################
+      - type: updateBranchProtection
+      - type: createIssue
+        title: Create an issue comment
+        body: 02_workflow-triggered.md
+        action_id: triggerIssue
       - type: respond
-        with: 03_create-an-issue.md
+        with: new-issue.md
+        issue: Create my-workflow.yml
         data:
-          pullUrl: "%payload.pull_request.html_url%"
-          actionsUrl: "%payload.repository.html_url%/actions"
-          workflowFile: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/.github/workflows/my-workflow.yml"
+          issueURL: "%actions.triggerIssue.data.html_url%"
+
+  - title: The workflow has commented
+    description: a response after the workflow has run
+    event: check_suite.completed
+    link: "{{repoUrl}}/issues/3"
+    actions:
+      - type: gate
+        left: "%payload.check_suite.app.name%"
+        operator: ===
+        right: "GitHub Actions"
+        else:
+          - type: respond
+            issue: Create an issue comment
+            with: debug.md
+            data:
+              debug: "%payload%"
+      - type: respond
+        with: 03_workflow-success.md
+        issue: Create an issue comment
