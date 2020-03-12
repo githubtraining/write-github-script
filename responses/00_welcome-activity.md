@@ -1,4 +1,4 @@
-## Configuring a workflow
+## Using GitHub Script in a workflow
 
 Actions are enabled on your repository by default, but we still have to tell our repository to use them. We do this by creating a workflow file in our repository.
 

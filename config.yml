@@ -21,7 +21,7 @@ before:
     issue: "%actions.welcomeIssue.data.number%"
     with: 00_welcome-activity.md
     data:
-      quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml&workflow_template=blank"
+      quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "%payload.repository.html_url%/actions/new"
 
 steps:
@@ -91,7 +91,7 @@ steps:
         issue: Start here!
       - type: removeBranchProtection
       - type: respond
-        with: 01_merg-workflow.md
+        with: 01_merge-workflow.md
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 

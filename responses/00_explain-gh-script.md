@@ -1,6 +1,6 @@
 ## Create an issue comment
 
-If we take a look at the [Octokit documentation](https://octokit.github.io/rest.js/v17#issues-create-comment) on how to create issue comments we we are greeted with the following method:
+If we take a look at the [Octokit documentation](https://octokit.github.io/rest.js/v17#issues-create-comment) on how to create issue comments we are greeted with the following method:
 
 **someFile.js**
 
