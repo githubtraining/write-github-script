@@ -141,15 +141,15 @@ steps:
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
         action_id: projectBoard
-      - type: octokit
-        method: projects.listColumns
-        project_id: "%actions.projectBoard.data[0].id%"
-        action_id: listColumns
+      # - type: octokit
+      #   method: projects.listColumns
+      #   project_id: "%actions.projectBoard.data[0].id%"
+      #   action_id: listColumns
       - type: respond
         with: 03_add-to-projects.md
         issue: Create and issue comment with GitHub Script
         data:
           listProj: "%actions.projectBoard%"
-          listCol: "%actions.listColumns%"
-          columnID: "%actions.listColumns.data[0].id%"
+          # listCol: "%actions.listColumns%"
+          # columnID: "%actions.listColumns.data[0].id%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml%"
