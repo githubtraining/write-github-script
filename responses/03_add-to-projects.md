@@ -6,7 +6,7 @@
 
 ## Column list
 
-{{listCol}}
+<!-- {{listCol}} -->
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
@@ -34,7 +34,7 @@ jobs:
               body: "🎉 You've created this issue comment using GitHub Script!!!"
             })
             github.projects.createCard({
-              column_id: {{columnID}}
+              column_id: "empty"
               content_id: context.payload.issue.id
               content_type: "Issue"
             });
