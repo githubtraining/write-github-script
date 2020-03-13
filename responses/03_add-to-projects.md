@@ -6,7 +6,7 @@
 
 ## Column list
 
-<!-- {{listCol}} -->
+{{listCol}}
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
