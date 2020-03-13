@@ -139,7 +139,7 @@ steps:
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
-        repo: "%payload.repository.repo.name%"
+        repo: "%payload.repository.name%"
         action_id: projectBoard
       - type: octokit
         method: projects.listColumns
