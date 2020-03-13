@@ -142,9 +142,9 @@ steps:
         repo: "%payload.repository.name%"
         action_id: projectBoard
       - type: octokit
-        method: projects.listColumns
-        project_id: "%actions.projectBoard.data[0].id%"
-        action_id: listColumns
+        # method: projects.listColumns
+        # project_id: "%actions.projectBoard.data[0].id%"
+        # action_id: listColumns
       - type: respond
         with: 03_add-to-projects.md
         issue: 3
