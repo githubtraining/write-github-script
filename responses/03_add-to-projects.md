@@ -1,12 +1,12 @@
 # let's add a card to a project board
 
-## Project board
+<!-- ## Project board
 
 {{listProj}}
 
 ## Column list
 
-{{listCol}}
+{{listCol}} -->
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
