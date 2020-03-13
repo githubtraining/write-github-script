@@ -15,3 +15,5 @@ When you are ready, merge this pull request.
 Once you have merged this pull request I will open a new issue so we can see this workflow in action!
 
 Oh, I'll also be responding to you from that issue!
+
+<details><summary>Trouble merging?</summary>Try refreshing the page!</details>
