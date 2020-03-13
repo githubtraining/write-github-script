@@ -1,4 +1,4 @@
-## You have triggered a workflow!
+## You have added a workflow!
 
 Great job @{{user.login}}, you successfully added a workflow to this repository 🎉!
 

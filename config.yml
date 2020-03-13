@@ -7,6 +7,13 @@ template:
   name: write-github-script
 before:
   - type: updateBranchProtection
+  - type: createProjectBoard
+    name: Learning Lab Project Board
+    description: >-
+      This board is used with the GitHub Actions: Using GitHub Script Learning Lab course.
+    columns:
+      - Triage Backlog
+      - Triage Complete
   - type: createIssue
     title: Start here!
     body: 00_welcome-issue.md
@@ -95,14 +102,14 @@ steps:
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
-  - title: Open an issue to trigger GitHub Script workflow
-    description: Use GitHub script to comment when an issue is opened
+  - title: Merge the new workflow into the master branch
+    description: Make the workflow available for use on the repository
     event: pull_request.closed
     link: "{{ repoUrl }}/pull/2"
     actions:
       - type: updateBranchProtection
       - type: createIssue
-        title: Create an issue comment
+        title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
         action_id: triggerIssue
       - type: respond
@@ -111,8 +118,8 @@ steps:
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
 
-  - title: The workflow has commented
-    description: a response after the workflow has run
+  - title: Add another GitHub Script action
+    description: Use GitHub Script to place this issue into a project board
     event: check_suite.completed
     link: "{{repoUrl}}/issues/3"
     actions:
@@ -122,10 +129,27 @@ steps:
         right: "GitHub Actions"
         else:
           - type: respond
-            issue: Create an issue comment
+            issue: Create an issue comment with GitHub Script
             with: debug.md
             data:
               debug: "%payload%"
       - type: respond
         with: 03_workflow-success.md
-        issue: Create an issue comment
+        issue: Create an issue comment with GitHub Script
+      - type: octokit
+        method: projects.listForRepo
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.repo.name%"
+        action_id: projectBoard
+      - type: octokit
+        method: projects.listColumns
+        project_id: "%actions.projectBoard.data[0].id%"
+        action_id: listColumns
+      - type: respond
+        with: 03_add-to-projects.md
+        issue: Create and issue comment with GitHub Script
+        data:
+          listProj: "%actions.projectBoard%"
+          listCol: "%actions.listColumns%"
+          columnID: "%actions.listColumns.data[0].id%"
+          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml%"
