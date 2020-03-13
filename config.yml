@@ -149,7 +149,7 @@ steps:
         with: 03_add-to-projects.md
         issue: Create and issue comment with GitHub Script
         data:
-          listProj: "%actions.projectBoard%"
+          listProj: "%actions.projectBoard.data%"
           # listCol: "%actions.listColumns%"
           # columnID: "%actions.listColumns.data[0].id%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml%"
