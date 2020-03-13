@@ -89,6 +89,7 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
+      - type: removeBranchProtection
       - type: respond
         issue: Start here!
         with: new-pull-request.md
@@ -96,7 +97,7 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: Start here!
-      - type: removeBranchProtection
+
       - type: respond
         with: 01_merge-workflow.md
         data:
@@ -135,7 +136,7 @@ steps:
               debug: "%payload%"
       - type: respond
         with: 03_workflow-success.md
-        issue: Create an issue comment with GitHub Script
+        issue: 3
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
@@ -152,4 +153,90 @@ steps:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
           columnID: "%actions.listColumns.data.0.id%"
-          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml%"
+          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
+    #  new pull request
+  - title: Modify your workflow file
+    description: Create a pull request to add changes to your workflow
+    event: pull_request
+    link: "{{ repoUrl }}/pull/4"
+    actions:
+      - type: gate
+        gates:
+          # if the payload action is 'opened' OR 'edited'
+          - left: "%payload.action%"
+            operator: ===
+            right: opened
+          - left: "%payload.action%"
+            operator: ===
+            right: edited
+            # AND the pull request title equals 'Create my-workflow.yml'
+      - type: gate
+        left: "%payload.pull_request.title%"
+        operator: ===
+        right: Update my-workflow.yml
+
+        # if those statments FAIL... do this
+        else:
+          - type: respond
+            with: e-rename-pr.md
+            data:
+              title: Update my-workflow.yml
+          # if those gates === true Then do this stuff
+
+      #######################################################
+      # Validate the filepath for the my-workflow.yml file
+      # get tree
+      - type: getTree
+        action_id: isInTree
+        recursive: true
+        sha: "%payload.pull_request.head.sha%"
+      # check for a file in a tree
+      - type: gate
+        left: "%actions.isInTree.data.tree%"
+        operator: includes
+        right: "path:.github/workflows/my-workflow.yml"
+        else:
+          # if file isn't where expected find true location
+          - type: findInTree
+            path: my-workflow.yml
+            tree: "%actions.isInTree.data.tree%"
+            # multiple: true
+            action_id: fileLocation
+          # help user with proper file location
+          - type: respond
+            with: e-wrong-file-location.md
+            data:
+              haveFile: "%actions.fileLocation.path%"
+              needFile: ".github/actions/cat-facts/action.yml"
+              editLink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/%actions.fileLocation.path%"
+              fileName: my-workflow.yml
+        # End filepath verification
+        #######################################################
+      - type: removeBranchProtection
+      - type: respond
+        issue: 3
+        with: new-pull-request.md
+        data:
+          pullUrl: "%payload.pull_request.html_url%"
+      - type: closeIssue
+        issue: 3
+      - type: respond
+        with: 04_merge-workflow.md
+        data:
+          actionsUrl: "%payload.repository.html_url%/actions"
+
+  - title: Merge the new workflow into the master branch
+    description: Make the workflow available for use on the repository
+    event: pull_request.closed
+    link: "{{ repoUrl }}/issues/5"
+    actions:
+      - type: updateBranchProtection
+      - type: createIssue
+        title: Create an issue comment with GitHub Script
+        body: 05_workflow-triggered.md
+        action_id: triggerIssue
+      - type: respond
+        with: new-issue.md
+        issue: Update my-workflow.yml
+        data:
+          issueURL: "%actions.triggerIssue.data.html_url%"
