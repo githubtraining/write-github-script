@@ -147,7 +147,7 @@ steps:
       #   action_id: listColumns
       - type: respond
         with: 03_add-to-projects.md
-        issue: Create and issue comment with GitHub Script
+        issue: 3
         data:
           listProj: "%actions.projectBoard%"
           # listCol: "%actions.listColumns%"
