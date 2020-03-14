@@ -267,10 +267,12 @@ steps:
         action_id: listColumns
       - type: respond
         with: 06_steps-overview.md
+        issue: 5
         data:
           projectTab: "%payload.repository.html_url%/projects/1"
       - type: respond
         with: 06_steps-activity.md
+        issue: 5
         data:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
