@@ -130,7 +130,7 @@ steps:
         right: "GitHub Actions"
         else:
           - type: respond
-            issue: Create an issue comment with GitHub Script
+            issue: 3
             with: debug.md
             data:
               debug: "%payload%"
@@ -240,3 +240,85 @@ steps:
         issue: Update my-workflow.yml
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
+
+  - title: Break your workflow into multiple steps
+    description: Separate the workflow concerns by adding more steps
+    event: check_suite.completed
+    link: "{{repoUrl}}/issues/5"
+    actions:
+      - type: gate
+        left: "%payload.check_suite.app.name%"
+        operator: ===
+        right: "GitHub Actions"
+        else:
+          - type: respond
+            issue: 5
+            with: debug.md
+            data:
+              debug: "%payload%"
+      - type: octokit
+        method: projects.listForRepo
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        action_id: projectBoard
+      - type: octokit
+        method: projects.listColumns
+        project_id: "%actions.projectBoard.data.0.id%"
+        action_id: listColumns
+      - type: respond
+        with: 06_steps-overview.md
+        data:
+          projectTab: "%payload.repository.html_url%/projects/1"
+      - type: respond
+        with: 06_steps-activity.md
+        data:
+          listProj: "%actions.projectBoard.data%"
+          listCol: "%actions.listColumns.data%"
+          columnID: "%actions.listColumns.data.0.id%"
+          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
+          actionsTab: "%paylaod.repository.html_url%/actions"
+
+  - title: Create better comments
+    description: Use a templated repsonse as the comment body
+    event: pull_request
+    link: "{{repoUrl}}/pull/6"
+    actions:
+      - type: respond
+        with: 07_explain-node.md
+      - type: respond
+        with: 07_use-fs.md
+        data:
+          quicklink: "%payload.repository.html_url%/edit/%payload.head.ref%/.github/workflows/my-workflow.yml"
+
+  - title: Merge the final workflow
+    description: Merge the final workflow into the repository
+    event: pull_request.synchronize
+    link: "{{repoUrl}}/pull/6"
+    actions:
+      - type: removeBranchProtection
+      - type: respond
+        with: 08_merge-workflow.md
+
+  - title: Course recap
+    description: Final remarks on course content
+    event: pull_request.closed
+    link: "{{repoUrl}}/issue/7"
+    actions:
+      - type: octokit
+        method: issues.create
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        title: It's alive!
+        body: |
+          ## Great Job so far!  
+
+          Like before, now we have to wait for the
+          workflow to run so that we can see the results.  I'll respond here once it has completed!
+        labels: ["bug"]
+      - type: respond
+        with: 09_workflow-completed.md
+        issue: It's alive!
+      # - type: createIssue
+      #   title: It's alive!
+      #   body: 09_workflow-triggered
+      #   action_id: triggerIssue

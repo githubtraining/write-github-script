@@ -20,11 +20,11 @@ We've gone ahead and done this on our end of things so that we could give you th
    name: Learning GitHub Script
 
    on:
-   issues:
+     issues:
        types: [opened]
 
    jobs:
-   comment:
+     comment:
        runs-on: ubuntu-latest
        steps:
        - uses: actions/github-script@0.8.0
