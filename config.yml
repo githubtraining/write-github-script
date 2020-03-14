@@ -285,11 +285,21 @@ steps:
     event: pull_request
     link: "{{repoUrl}}/pull/6"
     actions:
+      - type: octokit
+        method: projects.listForRepo
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        action_id: projectBoard
+      - type: octokit
+        method: projects.listColumns
+        project_id: "%actions.projectBoard.data.0.id%"
+        action_id: listColumns
       - type: respond
         with: 07_explain-node.md
       - type: respond
         with: 07_use-fs.md
         data:
+          columnID: "%actions.listColumns.data.0.id%"
           quicklink: "%payload.repository.html_url%/edit/%payload.head.ref%/.github/workflows/my-workflow.yml"
 
   - title: Merge the final workflow
@@ -319,7 +329,7 @@ steps:
         labels: ["bug"]
       - type: respond
         with: 09_workflow-completed.md
-        issue: It's alive!
+        issue: 7
       # - type: createIssue
       #   title: It's alive!
       #   body: 09_workflow-triggered
