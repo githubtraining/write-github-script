@@ -1,0 +1,5 @@
+## Whoo hoo 🎉
+
+Super awesome job @{{user.login}}! As you can see, your workflow still commented on this issue, but it did not add it to the project board!
+
+Don't hesitate to experiment with changes to the current workflow to see if what kind of logic you can implement to change the response to an issue based on the conditions that surround your own software development lifecycle!
