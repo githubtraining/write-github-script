@@ -7,7 +7,7 @@ We will make the following changes to the current workflow file:
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
-1. [Edit]({{quicklink}}) the current workflow to have he following contents:
+1. [Edit]({{quicklink}}) the current workflow to have the following contents:
 
    ```yaml
    name: Learning GitHub Script

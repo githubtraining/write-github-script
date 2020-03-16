@@ -300,7 +300,7 @@ steps:
         with: 07_use-fs.md
         data:
           columnID: "%actions.listColumns.data.0.id%"
-          quicklink: "%payload.repository.html_url%/edit/%payload.repository.head.ref%/.github/workflows/my-workflow.yml"
+          quicklink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/.github/workflows/my-workflow.yml"
 
   - title: Merge the final workflow
     description: Merge the final workflow into the repository
@@ -331,6 +331,12 @@ steps:
           I'll respond here once it has completed!
         labels: ["bug"]
 
+      - type: respond
+        with: new-issue.md
+        issue: 6
+        data:
+          issueURL: "%actions.triggerIssue.data.html_url%"
+
   - title: Open an issue
     description: Open another issue that does not contain the bug tag
     event: check_suite.completed
@@ -343,7 +349,7 @@ steps:
         with: 09_issue-activity.md
         issue: 7
         data:
-          quicklink: "%payload.repository.htm_url%/issues/new"
+          quicklink: "%payload.repository.html_url%/issues/new"
 
   - title: Course recap
     description: Final notes on course
