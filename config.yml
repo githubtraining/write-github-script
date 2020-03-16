@@ -317,6 +317,7 @@ steps:
     link: "{{repoUrl}}/issue/7"
     actions:
       - type: octokit
+        action_id: triggerIssue
         method: issues.create
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
