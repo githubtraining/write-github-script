@@ -1,4 +1,4 @@
-# let's add a card to a project board
+# Let's add a card to a project board
 
 We have added a project board to this repository for you. We will use this board, named **Learning Lab Project Board**, to add cards to when a new issue is created in your repository!
 
@@ -14,7 +14,7 @@ We've gone ahead and done this on our end of things so that we could give you th
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
-1. [Edit]({{quicklink}}) the current workflow `.github/workflows/my-workflow.yml` to have he following contents:
+1. [Edit]({{quicklink}}) the current workflow `.github/workflows/my-workflow.yml` to have the following contents:
 
    ```yaml
    name: Learning GitHub Script
