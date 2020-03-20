@@ -108,7 +108,7 @@ steps:
     event: pull_request.closed
     link: "{{ repoUrl }}/pull/2"
     actions:
-      - type: updateBranchProtection
+#       - type: updateBranchProtection
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
