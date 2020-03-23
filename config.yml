@@ -89,7 +89,7 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
-      - type: removeBranchProtection
+      # - type: removeBranchProtection
       - type: respond
         issue: Start here!
         with: new-pull-request.md
@@ -98,6 +98,9 @@ steps:
       - type: closeIssue
         issue: Start here!
 
+      - type: createReview
+        body: pr-review.md
+        event: APPROVE
       - type: respond
         with: 01_merge-workflow.md
         data:
@@ -108,7 +111,6 @@ steps:
     event: pull_request.closed
     link: "{{ repoUrl }}/pull/2"
     actions:
-#       - type: updateBranchProtection
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
@@ -118,6 +120,7 @@ steps:
         issue: Create my-workflow.yml
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
+      # - type: updateBranchProtection
 
   - title: Add another GitHub Script action
     description: Use GitHub Script to place this issue into a project board
@@ -230,7 +233,6 @@ steps:
     event: pull_request.closed
     link: "{{ repoUrl }}/issues/5"
     actions:
-      - type: updateBranchProtection
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 05_workflow-triggered.md
@@ -240,6 +242,7 @@ steps:
         issue: Update my-workflow.yml
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
+      - type: updateBranchProtection
 
   - title: Break your workflow into multiple steps
     description: Separate the workflow concerns by adding more steps
