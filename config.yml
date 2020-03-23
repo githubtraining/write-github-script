@@ -89,7 +89,6 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
-      - type: removeBranchProtection
       - type: respond
         issue: Start here!
         with: new-pull-request.md
@@ -97,9 +96,9 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: Start here!
-
-      - type: respond
-        with: 01_merge-workflow.md
+      - type: createReview
+        body: 01_merge-workflow.md
+        event: APPROVE
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -108,7 +107,6 @@ steps:
     event: pull_request.closed
     link: "{{ repoUrl }}/pull/2"
     actions:
-      - type: updateBranchProtection
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
@@ -212,7 +210,6 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
-      - type: removeBranchProtection
       - type: respond
         issue: 3
         with: new-pull-request.md
@@ -220,8 +217,9 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: 3
-      - type: respond
-        with: 04_merge-workflow.md
+      - type: createReview
+        body: 04_merge-workflow.md
+        event: APPROVE
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -230,7 +228,6 @@ steps:
     event: pull_request.closed
     link: "{{ repoUrl }}/issues/5"
     actions:
-      - type: updateBranchProtection
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 05_workflow-triggered.md
@@ -295,6 +292,13 @@ steps:
         project_id: "%actions.projectBoard.data.0.id%"
         action_id: listColumns
       - type: respond
+        issue: 5
+        with: new-pull-request.md
+        data:
+          pullUrl: "%payload.pull_request.html_url%"
+      - type: closeIssue
+        issue: 5
+      - type: respond
         with: 07_explain-node.md
       - type: respond
         with: 07_use-fs.md
@@ -307,9 +311,9 @@ steps:
     event: pull_request.synchronize
     link: "{{repoUrl}}/pull/6"
     actions:
-      - type: removeBranchProtection
-      - type: respond
-        with: 08_merge-workflow.md
+      - type: createReview
+        body: 08_merge-workflow.md
+        event: APPROVE
 
   - title: See workflow results
     description: See the results of the final workflow run
@@ -363,3 +367,4 @@ steps:
       - type: respond
         with: 10_course-recap.md
         issue: 8
+      - type: removeBranchProtection
