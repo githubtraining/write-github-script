@@ -292,6 +292,13 @@ steps:
         project_id: "%actions.projectBoard.data.0.id%"
         action_id: listColumns
       - type: respond
+        issue: 5
+        with: new-pull-request.md
+        data:
+          pullUrl: "%payload.pull_request.html_url%"
+      - type: closeIssue
+        issue: 5
+      - type: respond
         with: 07_explain-node.md
       - type: respond
         with: 07_use-fs.md
@@ -360,3 +367,4 @@ steps:
       - type: respond
         with: 10_course-recap.md
         issue: 8
+      - type: removeBranchProtection
