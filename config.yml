@@ -89,7 +89,6 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
-      # - type: removeBranchProtection
       - type: respond
         issue: Start here!
         with: new-pull-request.md
@@ -97,12 +96,9 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: Start here!
-
       - type: createReview
-        body: pr-review.md
+        body: 01_merge-workflow.md
         event: APPROVE
-      - type: respond
-        with: 01_merge-workflow.md
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -120,7 +116,6 @@ steps:
         issue: Create my-workflow.yml
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
-      # - type: updateBranchProtection
 
   - title: Add another GitHub Script action
     description: Use GitHub Script to place this issue into a project board
@@ -215,7 +210,6 @@ steps:
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
-      - type: removeBranchProtection
       - type: respond
         issue: 3
         with: new-pull-request.md
@@ -223,8 +217,9 @@ steps:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
         issue: 3
-      - type: respond
-        with: 04_merge-workflow.md
+      - type: createReview
+        body: 04_merge-workflow.md
+        event: APPROVE
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -242,7 +237,6 @@ steps:
         issue: Update my-workflow.yml
         data:
           issueURL: "%actions.triggerIssue.data.html_url%"
-      - type: updateBranchProtection
 
   - title: Break your workflow into multiple steps
     description: Separate the workflow concerns by adding more steps
@@ -310,9 +304,9 @@ steps:
     event: pull_request.synchronize
     link: "{{repoUrl}}/pull/6"
     actions:
-      - type: removeBranchProtection
-      - type: respond
-        with: 08_merge-workflow.md
+      - type: createReview
+        body: 08_merge-workflow.md
+        event: APPROVE
 
   - title: See workflow results
     description: See the results of the final workflow run
