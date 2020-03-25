@@ -19,8 +19,8 @@ before:
     title: Start here!
     body: 00_welcome-issue.md
     store:
-      welcomeIssueUrl: "%payload.data.issue.html_url%"
-      welcomeIssueNumber: "%payload.data.issue.number%"
+      welcomeIssueUrl: "%payload.issue.html_url%"
+      welcomeIssueNumber: "%payload.issue.number%"
     data:
       quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "%payload.repository.html_url%/actions/new"
@@ -112,8 +112,8 @@ steps:
         body: 01_merge-workflow.md
         event: APPROVE
         store:
-          firstPullUrl: "%payload.data.pull_request.html_url%"
-          firstPullNumber: "%payload.data.pull_request.number%"
+          firstPullUrl: "%payload.pull_request.html_url%"
+          firstPullNumber: "%payload.pull_request.number%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -127,8 +127,8 @@ steps:
         body: 02_workflow-triggered.md
         action_id: triggerIssue
         store:
-          secondIssueNumber: "%payload.data.issue.number%"
-          secondIssueUrl: "%payload.data.issue.html_url%"
+          secondIssueNumber: "%payload.issue.number%"
+          secondIssueUrl: "%payload.issue.html_url%"
       - type: respond
         with: new-issue.md
         issue: "%store.firstPullNumber%"
@@ -232,8 +232,8 @@ steps:
         body: 04_merge-workflow.md
         event: APPROVE
         store:
-          secondPullNumber: "%payload.data.pull_request.number%"
-          secondPullUrl: "%payload.data.pull_request.html_url%"
+          secondPullNumber: "%payload.pull_request.number%"
+          secondPullUrl: "%payload.pull_request.html_url%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -247,8 +247,8 @@ steps:
         body: 05_workflow-triggered.md
         action_id: triggerIssue
         store:
-          thirdIssueUrl: "%payload.data.issue.html_url%"
-          thirdIssueNumber: "%payload.data.issue.number%"
+          thirdIssueUrl: "%payload.issue.html_url%"
+          thirdIssueNumber: "%payload.issue.number%"
       - type: respond
         with: new-issue.md
         issue: "{{store.secondPullNumber}}"
