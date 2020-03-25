@@ -14,39 +14,51 @@ before:
     columns:
       - Triage Backlog
       - Triage Complete
+
   - type: createIssue
     title: Start here!
     body: 00_welcome-issue.md
-    action_id: welcomeIssue
-  - type: respond
-    with: 00_explain-gh-script.md
-    issue: "%actions.welcomeIssue.data.number%"
-  - type: respond
-    with: 00_octokit-comparison.md
-    issue: "%actions.welcomeIssue.data.number%"
-  - type: respond
-    issue: "%actions.welcomeIssue.data.number%"
-    with: 00_welcome-activity.md
+    store:
+      firstIssueUrl: "%result.data.issue.html_url%"
+      firstIssueNumber: "%result.data.issue.number%"
     data:
       quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "%payload.repository.html_url%/actions/new"
+    comments:
+      - 00_explain-gh-script.md
+      - 00_octokit-comparison.md
+      - 00_welcome-activity.md
+  # - type: respond
+  #   with: 00_explain-gh-script.md
+  #   issue: "%actions.welcomeIssue.data.number%"
+  # - type: respond
+  #   with: 00_octokit-comparison.md
+  #   issue: "%actions.welcomeIssue.data.number%"
+  # - type: respond
+  #   issue: "%actions.welcomeIssue.data.number%"
+  #   with: 00_welcome-activity.md
+  #   data:
+  #     quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
+  #     actionsUrl: "%payload.repository.html_url%/actions/new"
 
 steps:
   - title: Setup a workflow file
     description: Create a pull request to add a workflow
-    event: pull_request
-    link: "{{ repoUrl }}/issues/1"
+    event:
+      - pull_request.opened
+      - pull_request.edited
+    link: "{{store.firstIssueUrl}}"
     actions:
-      - type: gate
-        gates:
-          # if the payload action is 'opened' OR 'edited'
-          - left: "%payload.action%"
-            operator: ===
-            right: opened
-          - left: "%payload.action%"
-            operator: ===
-            right: edited
-            # AND the pull request title equals 'Create my-workflow.yml'
+      # - type: gate
+      #   gates:
+      #     # if the payload action is 'opened' OR 'edited'
+      #     - left: "%payload.action%"
+      #       operator: ===
+      #       right: opened
+      #     - left: "%payload.action%"
+      #       operator: ===
+      #       right: edited
+      #       # AND the pull request title equals 'Create my-workflow.yml'
       - type: gate
         left: "%payload.pull_request.title%"
         operator: ===
@@ -84,43 +96,50 @@ steps:
             with: e-wrong-file-location.md
             data:
               haveFile: "%actions.fileLocation.path%"
-              needFile: ".github/actions/cat-facts/action.yml"
+              needFile: ".github/workflows/my-workflow.yml"
               editLink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/%actions.fileLocation.path%"
               fileName: my-workflow.yml
         # End filepath verification
         #######################################################
       - type: respond
-        issue: Start here!
+        issue: "{{store.firstIssueNumber}}"
         with: new-pull-request.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
-        issue: Start here!
+        issue: "{{store.firstIssueNumber}}"
       - type: createReview
         body: 01_merge-workflow.md
         event: APPROVE
+        store:
+          firstPullUrl: "%result.data.pull_request.html_url%"
+          firstPullNumber: "%result.data.pull_request.number%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
   - title: Merge the new workflow into the master branch
     description: Make the workflow available for use on the repository
     event: pull_request.closed
-    link: "{{ repoUrl }}/pull/2"
+    link: "{{store.firstPullUrl}}"
     actions:
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
         action_id: triggerIssue
+        store:
+          secondIssueNumber: "%result.data.issue.number%"
+          secondIssueUrl: "%result.data.issue.html_url%"
       - type: respond
         with: new-issue.md
-        issue: Create my-workflow.yml
+        issue: "%store.firstPullNumber%"
         data:
-          issueURL: "%actions.triggerIssue.data.html_url%"
+          issueURL: "%store.firstPullUrl%"
 
   - title: Add another GitHub Script action
     description: Use GitHub Script to place this issue into a project board
-    event: check_suite.completed
-    link: "{{repoUrl}}/issues/3"
+    # event: check_suite.completed # issue_comment.created/edited
+    event: issue_comment.created
+    link: "{{store.secondIssueUrl}}"
     actions:
       - type: gate
         left: "%payload.check_suite.app.name%"
@@ -128,13 +147,13 @@ steps:
         right: "GitHub Actions"
         else:
           - type: respond
-            issue: 3
+            issue: "{{store.secondIssueNumber}}"
             with: debug.md
             data:
               debug: "%payload%"
       - type: respond
         with: 03_workflow-success.md
-        issue: 3
+        issue: "{{store.secondIssueNumber}}"
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
@@ -146,7 +165,7 @@ steps:
         action_id: listColumns
       - type: respond
         with: 03_add-to-projects.md
-        issue: 3
+        issue: "{{store.secondIssueNumber}}"
         data:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
@@ -155,19 +174,11 @@ steps:
     #  new pull request
   - title: Modify your workflow file
     description: Create a pull request to add changes to your workflow
-    event: pull_request
-    link: "{{ repoUrl }}/pull/4"
+    event:
+      - pull_request.opened
+      - pull_request.edited
+    link: "{{ store.secondIssueUrl }}"
     actions:
-      - type: gate
-        gates:
-          # if the payload action is 'opened' OR 'edited'
-          - left: "%payload.action%"
-            operator: ===
-            right: opened
-          - left: "%payload.action%"
-            operator: ===
-            right: edited
-            # AND the pull request title equals 'Create my-workflow.yml'
       - type: gate
         left: "%payload.pull_request.title%"
         operator: ===
@@ -211,37 +222,44 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: 3
+        issue: "{{store.secondIssueNumber}}"
         with: new-pull-request.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
-        issue: 3
+        issue: "{{store.secondIssueNumber}}"
       - type: createReview
         body: 04_merge-workflow.md
         event: APPROVE
+        store:
+          secondPullNumber: "%result.data.pull_request.number%"
+          secondPullUrl: "%result.data.pull_request.html_url%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
   - title: Merge the new workflow into the master branch
     description: Make the workflow available for use on the repository
     event: pull_request.closed
-    link: "{{ repoUrl }}/issues/5"
+    link: "{{ store.secondPullUrl }}"
     actions:
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 05_workflow-triggered.md
         action_id: triggerIssue
+        store:
+          thirdIssueUrl: "%result.data.issue.html_url%"
+          thirdIssueNumber: "%result.data.issue.number%"
       - type: respond
         with: new-issue.md
-        issue: Update my-workflow.yml
+        issue: "{{store.secondPullNumber}}"
         data:
-          issueURL: "%actions.triggerIssue.data.html_url%"
+          issueURL: "{{store.thirdIssueUrl}}"
 
   - title: Break your workflow into multiple steps
     description: Separate the workflow concerns by adding more steps
-    event: check_suite.completed
-    link: "{{repoUrl}}/issues/5"
+    # event: check_suite.completed
+    event: issue_comment.created
+    link: "{{thirdIssueUlr}}"
     actions:
       - type: gate
         left: "%payload.check_suite.app.name%"
@@ -249,7 +267,7 @@ steps:
         right: "GitHub Actions"
         else:
           - type: respond
-            issue: 5
+            issue: "{{store.thirdIssueNumber}}"
             with: debug.md
             data:
               debug: "%payload%"
@@ -264,12 +282,12 @@ steps:
         action_id: listColumns
       - type: respond
         with: 06_steps-overview.md
-        issue: 5
+        issue: "{{store.thirdIssueNumber}}"
         data:
           projectTab: "%payload.repository.html_url%/projects/1"
       - type: respond
         with: 06_steps-activity.md
-        issue: 5
+        issue: "{{store.thirdIssueNumber}}"
         data:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
@@ -292,12 +310,12 @@ steps:
         project_id: "%actions.projectBoard.data.0.id%"
         action_id: listColumns
       - type: respond
-        issue: 5
+        issue: "{{store.thirdIssueNumber}}"
         with: new-pull-request.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
-        issue: 5
+        issue: "{{store.thirdIssueNumber}}"
       - type: respond
         with: 07_explain-node.md
       - type: respond
