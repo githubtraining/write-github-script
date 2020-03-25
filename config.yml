@@ -19,8 +19,8 @@ before:
     title: Start here!
     body: 00_welcome-issue.md
     store:
-      firstIssueUrl: "%result.data.issue.html_url%"
-      firstIssueNumber: "%result.data.issue.number%"
+      welcomeIssueUrl: "%payload.data.issue.html_url%"
+      welcomeIssueNumber: "%payload.data.issue.number%"
     data:
       quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "%payload.repository.html_url%/actions/new"
@@ -47,7 +47,7 @@ steps:
     event:
       - pull_request.opened
       - pull_request.edited
-    link: "{{store.firstIssueUrl}}"
+    link: "{{store.welcomeIssueUrl}}"
     actions:
       # - type: gate
       #   gates:
@@ -102,18 +102,18 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: "{{store.firstIssueNumber}}"
+        issue: "{{store.welcomeIssueNumber}}"
         with: new-pull-request.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
       - type: closeIssue
-        issue: "{{store.firstIssueNumber}}"
+        issue: "{{store.welcomeIssueNumber}}"
       - type: createReview
         body: 01_merge-workflow.md
         event: APPROVE
         store:
-          firstPullUrl: "%result.data.pull_request.html_url%"
-          firstPullNumber: "%result.data.pull_request.number%"
+          firstPullUrl: "%payload.data.pull_request.html_url%"
+          firstPullNumber: "%payload.data.pull_request.number%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -127,8 +127,8 @@ steps:
         body: 02_workflow-triggered.md
         action_id: triggerIssue
         store:
-          secondIssueNumber: "%result.data.issue.number%"
-          secondIssueUrl: "%result.data.issue.html_url%"
+          secondIssueNumber: "%payload.data.issue.number%"
+          secondIssueUrl: "%payload.data.issue.html_url%"
       - type: respond
         with: new-issue.md
         issue: "%store.firstPullNumber%"
@@ -232,8 +232,8 @@ steps:
         body: 04_merge-workflow.md
         event: APPROVE
         store:
-          secondPullNumber: "%result.data.pull_request.number%"
-          secondPullUrl: "%result.data.pull_request.html_url%"
+          secondPullNumber: "%payload.data.pull_request.number%"
+          secondPullUrl: "%payload.data.pull_request.html_url%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
@@ -247,8 +247,8 @@ steps:
         body: 05_workflow-triggered.md
         action_id: triggerIssue
         store:
-          thirdIssueUrl: "%result.data.issue.html_url%"
-          thirdIssueNumber: "%result.data.issue.number%"
+          thirdIssueUrl: "%payload.data.issue.html_url%"
+          thirdIssueNumber: "%payload.data.issue.number%"
       - type: respond
         with: new-issue.md
         issue: "{{store.secondPullNumber}}"
