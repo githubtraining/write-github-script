@@ -251,7 +251,7 @@ steps:
     description: Separate the workflow concerns by adding more steps
     # event: check_suite.completed
     event: issue_comment.created
-    link: "{{thirdIssueUrl}}"
+    link: "{{store.thirdIssueUrl}}"
     actions:
       - type: gate
         left: "%payload.check_suite.app.name%"
