@@ -46,17 +46,16 @@ steps:
         store:
           firstPullNumber: "%payload.pull_request.number%"
           firstPullUrl: "%payload.pull_request.html_url%"
+        operator: ===
+        right: Create my-workflow.yml
 
-        # operator: ===
-        # right: Create my-workflow.yml
-
-        # # if those statments FAIL... do this
-        # else:
-        #   - type: respond
-        #     with: e-rename-pr.md
-        #     data:
-        #       title: Create my-workflow.yml
-        # if those gates === true Then do this stuff
+        # if those statments FAIL... do this
+        else:
+          - type: respond
+            with: e-rename-pr.md
+            data:
+              title: Create my-workflow.yml
+        if those gates === true Then do this stuff
       #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
@@ -168,10 +167,11 @@ steps:
     actions:
       - type: gate
         store:
-          secondPullNumber: "%result.data.number%"
-          secondPullUrl: "%result.data.html_url%"
+          secondPullNumber: "%payload.pull_request.number%"
+          secondPullUrl: "%payload.pull_request.html_url%"
         left: "%payload.pull_request.title%"
         operator: ===
+
         right: Update my-workflow.yml
 
         # if those statments FAIL... do this
@@ -180,8 +180,7 @@ steps:
             with: e-rename-pr.md
             data:
               title: Update my-workflow.yml
-          # if those gates === true Then do this stuff
-
+        # if those gates === true Then do this stuff
       #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
@@ -290,8 +289,13 @@ steps:
     event:
       - pull_request.opened
       - pull_request.edited
-    link: "{{repoUrl}}/pull/6"
+    link: "{{store.thirdIssueUrl}}"
     actions:
+      - type: gate
+        store:
+          thirdPullNumber: "%payload.pull_request.number%"
+          thirdPullUrl: "%payload.pull_request.html_url%"
+        left: "%payload.pull_request.title%"
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
@@ -305,7 +309,7 @@ steps:
         issue: "%registration.store.thirdIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%payload.pull_request.html_url%"
+          pullUrl: "%registration.store.thirdPullUrl%"
       - type: closeIssue
         issue: "%registration.store.thirdIssueNumber%"
       - type: respond
@@ -319,7 +323,7 @@ steps:
   - title: Merge the final workflow
     description: Merge the final workflow into the repository
     event: pull_request.synchronize
-    link: "{{repoUrl}}/pull/6"
+    link: "{{store.thirdPullUrl}}"
     actions:
       - type: createReview
         body: 08_merge-workflow.md
@@ -328,7 +332,7 @@ steps:
   - title: See workflow results
     description: See the results of the final workflow run
     event: pull_request.closed
-    link: "{{repoUrl}}/issue/7"
+    link: "{{store.thirdPullUrl}}"
     actions:
       - type: octokit
         action_id: triggerIssue
@@ -345,24 +349,39 @@ steps:
 
           I'll respond here once it has completed!
         labels: ["bug"]
+        store:
+          fourthIssueUrl: "%result.data.html_url%"
+          fourthIssueNumber: "%result.data.number%"
 
       - type: respond
         with: new-issue.md
-        issue: 6
+        issue: "%registration.store.thirdPullNumber%"
         data:
-          issueURL: "%actions.triggerIssue.data.html_url%"
+          # issueURL: "%actions.triggerIssue.data.html_url%"
+          issueURL: "%registration.store.fourthIssueUrl%"
 
   - title: Open an issue
     description: Open another issue that does not contain the bug tag
-    event: check_suite.completed
-    link: "{{repoUrl}}/issue/7"
+    # event: check_suite.completed
+    event: issue_comment.created
+    link: "{{store.fourthIssueUrl}}"
     actions:
+      - type: gate
+        left: "%payload.comment.user.login%"
+        operator: ===
+        right: "github-actions[bot]"
+        else:
+          - type: respond
+            issue: "%registration.store.fourthIssueNumber%"
+            with: debug.md
+            data:
+              debug: "%payload%"
       - type: respond
         with: 09_workflow-completed.md
-        issue: 7
+        issue: "%registration.store.fourthIssueNumber%"
       - type: respond
         with: 09_issue-activity.md
-        issue: 7
+        issue: "%registration.store.fourthIssueNumber%"
         data:
           quicklink: "%payload.repository.html_url%/issues/new"
 
