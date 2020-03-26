@@ -2,6 +2,11 @@ title: "GitHub Actions: Using GitHub Script"
 description: >-
   This course covers how to use GitHub Script to quickly use octokit/rest in a
   GitHub Actions workflow.
+tags:
+  - GitHub Actions
+  - Octokit
+  - Workflow
+  - Automation
 template:
   repo: write-github-script-template
   name: write-github-script
@@ -54,36 +59,24 @@ steps:
       # get tree
       - type: getTree
         action_id: isInTree
-        store:
-          firstWorkflowTree: "%result.data.tree%"
         recursive: true
         sha: "%payload.pull_request.head.sha%"
-      - type: respond
-        with: e-result.md
-        data:
-          resultData: "%registration.store.firstWorkflowTree%"
-          actionIdData: "%actions.isInTree.data.tree%"
       # check for a file in a tree
       - type: gate
-        # left: "%actions.isInTree.data.tree%"
-        left: "%registration.store.firstWorkflowTree%"
+        left: "%actions.isInTree.data.tree%"
         operator: includes
         right: "path:.github/workflows/my-workflow.yml"
         else:
           # if file isn't where expected find true location
           - type: findInTree
             path: my-workflow.yml
-            # tree: "%actions.isInTree.data.tree%"
-            tree: "%registration.store.firstWorkflowTree%"
-            # action_id: fileLocation
-            store:
-              firstFileLocation: "%result.data.path%"
+            tree: "%actions.isInTree.data.tree%"
+            action_id: fileLocation
           # help user with proper file location
           - type: respond
             with: e-wrong-file-location.md
             data:
-              # haveFile: "%actions.fileLocation.path%"
-              haveFile: "%registration.store.firstFileLocation%"
+              haveFile: "%actions.fileLocation.path%"
               needFile: ".github/workflows/my-workflow.yml"
               editLink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/%actions.fileLocation.path%"
               fileName: my-workflow.yml
@@ -103,7 +96,7 @@ steps:
           firstPullUrl: "%result.data.html_url%"
           firstPullNumber: "%result.data.number%"
         data:
-          actionsUrl: "%payload.repository.html_url%/actions"
+          actionsUrl: "%payload.repository.html_url%/actions%"
 
   - title: Merge the new workflow into the master branch
     description: Make the workflow available for use on the repository
@@ -113,7 +106,6 @@ steps:
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
-        # action_id: triggerIssue
         store:
           secondIssueNumber: "%result.data.number%"
           secondIssueUrl: "%result.data.html_url%"

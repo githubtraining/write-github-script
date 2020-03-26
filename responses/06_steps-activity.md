@@ -52,4 +52,6 @@ We will make the following changes to the current workflow file:
 
 ---
 
+I am waiting for you to create a new pull request before moving on.
+
 I'll respond in the pull request you create

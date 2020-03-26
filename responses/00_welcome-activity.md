@@ -62,4 +62,4 @@ _It is important to place meaningful content into the body of the pull requests 
 
 ---
 
-I'll respond in the new pull request when I detect it has been created.
+I am waiting for you to create a new pull request before moving on.
