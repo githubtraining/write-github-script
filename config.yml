@@ -94,7 +94,7 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: "{{registration.store.welcomeIssueNumber}}"
+        issue: "%registration.store.welcomeIssueNumber%"
         with: new-pull-request.md
         data:
           pullUrl: "%payload.pull_request.html_url%"
