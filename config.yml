@@ -140,13 +140,11 @@ steps:
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
-        # action_id: projectBoard
-        store:
-          projectBoard: "%result.data.0.id%"
+        action_id: projectBoard
+
       - type: octokit
         method: projects.listColumns
-        # project_id: "%actions.projectBoard.data.0.id%"
-        project_id: "%registration.store.projectBoard%"
+        project_id: "%actions.projectBoard.data.0.id%"
         action_id: listColumns
         store:
           listColumns: "%result.data.0.id"
@@ -154,8 +152,7 @@ steps:
         with: 03_add-to-projects.md
         issue: "%registration.store.secondIssueNumber%"
         data:
-          # columnID: "%actions.listColumns.data.0.id%"
-          columnID: "%registration.store.listColumns%"
+          columnID: "%actions.listColumns.data.0.id%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
     #  new pull request
   - title: Modify your workflow file
@@ -232,7 +229,7 @@ steps:
     link: "{{ store.secondPullUrl }}"
     actions:
       - type: createIssue
-        title: Create an issue comment with GitHub Script
+        title: Comment and triage with GitHub Script
         body: 05_workflow-triggered.md
         action_id: triggerIssue
         store:
