@@ -55,7 +55,7 @@ steps:
             with: e-rename-pr.md
             data:
               title: Create my-workflow.yml
-        if those gates === true Then do this stuff
+        # if those gates === true Then do this stuff
       #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
