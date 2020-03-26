@@ -42,21 +42,21 @@ steps:
     link: "{{store.welcomeIssueUrl}}"
     actions:
       - type: gate
+        left: "%payload.pull_request.title%"
         store:
           firstPullNumber: "%payload.pull_request.number%"
           firstPullUrl: "%payload.pull_request.html_url%"
-        left: "%payload.pull_request.title%"
-        operator: ===
-        right: Create my-workflow.yml
 
-        # if those statments FAIL... do this
-        else:
-          - type: respond
-            with: e-rename-pr.md
-            data:
-              title: Create my-workflow.yml
-          # if those gates === true Then do this stuff
+        # operator: ===
+        # right: Create my-workflow.yml
 
+        # # if those statments FAIL... do this
+        # else:
+        #   - type: respond
+        #     with: e-rename-pr.md
+        #     data:
+        #       title: Create my-workflow.yml
+        # if those gates === true Then do this stuff
       #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
@@ -89,7 +89,7 @@ steps:
         issue: "%registration.store.welcomeIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%payload.pull_request.html_url%"
+          pullUrl: "%registration.store.firstPullUrl%"
       - type: closeIssue
         issue: "%registration.store.welcomeIssueNumber%"
       - type: createReview
@@ -101,7 +101,7 @@ steps:
         data:
           actionsUrl: "%payload.repository.html_url%/actions%"
 
-  - title: Merge the Create my-workflow.yml pull request
+  - title: Merge your first pull request
     description: Make the workflow available to the repository by merging the pull request
     event: pull_request.closed
     link: "{{store.firstPullUrl}}"
@@ -116,7 +116,7 @@ steps:
         with: new-issue.md
         issue: "%registration.store.firstPullNumber%"
         data:
-          issueURL: "%registration.store.secondIssueNumber%"
+          issueURL: "%registration.store.secondIssueUrl%"
 
   - title: Add another GitHub Script action
     description: Use GitHub Script to place this issue into a project board
@@ -167,6 +167,9 @@ steps:
     link: "{{ store.secondIssueUrl }}"
     actions:
       - type: gate
+        store:
+          secondPullNumber: "%result.data.number%"
+          secondPullUrl: "%result.data.html_url%"
         left: "%payload.pull_request.title%"
         operator: ===
         right: Update my-workflow.yml
@@ -212,19 +215,19 @@ steps:
         issue: "%registration.store.secondIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%payload.pull_request.html_url%"
+          pullUrl: "%registration.store.secondPullUrl%"
       - type: closeIssue
         issue: "%registration.store.secondIssueNumber%"
       - type: createReview
         body: 04_merge-workflow.md
         event: APPROVE
-        store:
-          secondPullNumber: "%result.data.number%"
-          secondPullUrl: "%result.data.html_url%"
+        # store:
+        #   secondPullNumber: "%result.data.number%"
+        #   secondPullUrl: "%result.data.html_url%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
-  - title: Merge the new workflow into the master branch
+  - title: Merge the updated workflow into the master branch
     description: Make the workflow available for use on the repository
     event: pull_request.closed
     link: "{{ store.secondPullUrl }}"
@@ -249,12 +252,12 @@ steps:
     link: "{{store.thirdIssueUrl}}"
     actions:
       - type: gate
-        left: "%payload.check_suite.app.name%"
+        left: "%payload.comment.user.login%"
         operator: ===
-        right: "GitHub Actions"
+        right: "github-actions[bot]"
         else:
           - type: respond
-            issue: "%registration.store.thirdIssueNumber%"
+            issue: "%registration.store.secondIssueNumber%"
             with: debug.md
             data:
               debug: "%payload%"
@@ -284,7 +287,9 @@ steps:
 
   - title: Create better comments
     description: Use a templated repsonse as the comment body
-    event: pull_request
+    event:
+      - pull_request.opened
+      - pull_request.edited
     link: "{{repoUrl}}/pull/6"
     actions:
       - type: octokit
