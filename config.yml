@@ -53,11 +53,16 @@ steps:
       # Validate the filepath for the my-workflow.yml file
       # get tree
       - type: getTree
-        # action_id: isInTree
+        action_id: isInTree
         store:
           firstWorkflowTree: "%result.data.tree%"
         recursive: true
         sha: "%payload.pull_request.head.sha%"
+      - type: respond
+        with: e-result.md
+        data:
+          resultData: "%registration.store.firstWorkflowTree%"
+          actionIdData: "%actions.isInTree.data.tree%"
       # check for a file in a tree
       - type: gate
         # left: "%actions.isInTree.data.tree%"
