@@ -1,0 +1,3 @@
+# view result
+
+{{store.createIssueResult}}
