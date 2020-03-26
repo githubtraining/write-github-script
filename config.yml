@@ -293,6 +293,14 @@ steps:
           thirdPullNumber: "%payload.pull_request.number%"
           thirdPullUrl: "%payload.pull_request.html_url%"
         left: "%payload.pull_request.title%"
+        operator: ===
+        right: Update my-workflow.yml
+        # if those statments FAIL... do this
+        else:
+          - type: respond
+            with: e-rename-pr.md
+            data:
+              title: Update my-workflow.yml
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
@@ -354,25 +362,20 @@ steps:
         with: new-issue.md
         issue: "%registration.store.thirdPullNumber%"
         data:
-          # issueURL: "%actions.triggerIssue.data.html_url%"
           issueURL: "%registration.store.fourthIssueUrl%"
 
   - title: Another workflow run
     description: Observe the results of an enhanced workflow run
-    # event: check_suite.completed
-    event: issue_comment.created
+    event: check_suite.completed
     link: "{{store.fourthIssueUrl}}"
     actions:
       - type: gate
-        left: "%payload.comment.user.login%"
+        left: "%payload.check_suite.app.name%"
         operator: ===
-        right: "github-actions[bot]"
+        right: "GitHub Actions"
         else:
           - type: respond
-            issue: "%registration.store.fourthIssueNumber%"
-            with: debug.md
-            data:
-              debug: "%payload%"
+            with: e-action-result.md
       - type: respond
         with: 09_workflow-completed.md
         issue: "%registration.store.fourthIssueNumber%"
@@ -387,6 +390,13 @@ steps:
     event: check_suite.completed
     link: "{{repoUrl}}/issue/8"
     actions:
+      - type: gate
+        left: "%payload.check_suite.app.name%"
+        operator: ===
+        right: "GitHub Actions"
+        else:
+          - type: respond
+            with: e-action-result.md
       - type: respond
         with: 10_workflow-completed.md
         issue: 8
