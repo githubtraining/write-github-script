@@ -34,7 +34,7 @@ before:
       - 00_welcome-activity.md
 
 steps:
-  - title: Setup a workflow file
+  - title: Start here!
     description: Create a pull request to add a workflow
     event:
       - pull_request.opened
@@ -42,6 +42,9 @@ steps:
     link: "{{store.welcomeIssueUrl}}"
     actions:
       - type: gate
+        store:
+          firstPullNumber: "%payload.pull_request.number%"
+          firstPullUrl: "%payload.pull_reqeust.html_url%"
         left: "%payload.pull_request.title%"
         operator: ===
         right: Create my-workflow.yml
@@ -92,14 +95,14 @@ steps:
       - type: createReview
         body: 01_merge-workflow.md
         event: APPROVE
-        store:
-          firstPullUrl: "%result.data.html_url%"
-          firstPullNumber: "%result.data.number%"
+        # store:
+        #   firstPullUrl: "%result.data.html_url%"
+        #   firstPullNumber: "%result.data.number%"
         data:
           actionsUrl: "%payload.repository.html_url%/actions%"
 
-  - title: Merge the new workflow into the master branch
-    description: Make the workflow available for use on the repository
+  - title: Add a workflow file to the repository
+    description: Merge the pull request containing the workflow into the master branch
     event: pull_request.closed
     link: "{{store.firstPullUrl}}"
     actions:
