@@ -44,7 +44,7 @@ steps:
       - type: gate
         store:
           firstPullNumber: "%payload.pull_request.number%"
-          firstPullUrl: "%payload.pull_requestt.html_url%"
+          firstPullUrl: "%payload.pull_request.html_url%"
         left: "%payload.pull_request.title%"
         operator: ===
         right: Create my-workflow.yml
