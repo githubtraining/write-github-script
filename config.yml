@@ -286,7 +286,7 @@ steps:
     event:
       - pull_request.opened
       - pull_request.edited
-    link: "{{store.thirdIssueUrl}}"
+    link: "{{store.thirdPullUrl}}"
     actions:
       - type: gate
         store:
@@ -317,8 +317,8 @@ steps:
           columnID: "%actions.listColumns.data.0.id%"
           quicklink: "%payload.repository.html_url%/edit/%payload.pull_request.head.ref%/.github/workflows/my-workflow.yml"
 
-  - title: Merge the final workflow
-    description: Merge the final workflow into the repository
+  - title: Use a templated response
+    description: Create the comment body from a template using the Node.js file system module
     event: pull_request.synchronize
     link: "{{store.thirdPullUrl}}"
     actions:
@@ -326,8 +326,8 @@ steps:
         body: 08_merge-workflow.md
         event: APPROVE
 
-  - title: See workflow results
-    description: See the results of the final workflow run
+  - title: Merge the updated workflow
+    description: Merge the worklow to the master branch
     event: pull_request.closed
     link: "{{store.thirdPullUrl}}"
     actions:
@@ -357,8 +357,8 @@ steps:
           # issueURL: "%actions.triggerIssue.data.html_url%"
           issueURL: "%registration.store.fourthIssueUrl%"
 
-  - title: Open an issue
-    description: Open another issue that does not contain the bug tag
+  - title: Another workflow run
+    description: Observe the results of an enhanced workflow run
     # event: check_suite.completed
     event: issue_comment.created
     link: "{{store.fourthIssueUrl}}"
