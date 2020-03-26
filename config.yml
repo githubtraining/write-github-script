@@ -21,7 +21,7 @@ before:
     store:
       welcomeIssueUrl: "%result.data.html_url%"
       welcomeIssueNumber: "%result.data.number%"
-      # createIssueResult: "%result%"
+      createIssueResult: "%result.data%"
     data:
       quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "%payload.repository.html_url%/actions/new"
@@ -29,7 +29,7 @@ before:
       - 00_explain-gh-script.md
       - 00_octokit-comparison.md
       - 00_welcome-activity.md
-      # - e-result.md
+      - e-result.md
   # - type: respond
   #   with: 00_explain-gh-script.md
   #   issue: "%actions.welcomeIssue.data.number%"
