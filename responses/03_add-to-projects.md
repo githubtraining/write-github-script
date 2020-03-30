@@ -45,7 +45,7 @@ We've gone ahead and done this on our end of things so that we could give you th
    ```
 
 2. Commit the workflow to a new branch.
-3. Create a pull request titled **Update my-workflow.yml**.
+3. Create a pull request titled **Add issues to project board**.
 4. Supply the pull request body content and click `Create pull request`.
 
 ---

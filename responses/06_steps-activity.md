@@ -47,7 +47,7 @@ We will make the following changes to the current workflow file:
    ```
 
 2. Commit the workflow to a new branch.
-3. Create a pull request titled **Update my-workflow.yml**.
+3. Create a pull request titled **Create better comments**.
 4. Supply the pull request body content and click `Create pull request`.
 
 ---
