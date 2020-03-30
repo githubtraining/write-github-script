@@ -1,6 +1,6 @@
 # Let's add a card to a project board
 
-We have added a project board to this repository for you. We will use this board, named **Learning Lab Project Board**, to add cards to when a new issue is created in your repository!
+We have added [a project board]({{ store.projectUrl }}) to this repository for you. We will use this board, named **Learning Lab Project Board**, to add cards to when a new issue is created in your repository!
 
 Like creating comments and opening pull requests, octokit/rest.js can be used for many more types of interactions. Managing GitHub Projects makes that list!
 

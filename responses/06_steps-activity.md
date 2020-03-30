@@ -2,12 +2,12 @@
 
 We will make the following changes to the current workflow file:
 
-- Name each step so we can easily keep track of it in the [actions tab]({{actionTab}})
+- Name each step so we can easily keep track of it in the [actions tab]({{actionsTab}})
 - Use expressions to determine `if` a step should execute
 
 ### :keyboard: Activity: Add newly opened issue to project board
 
-1. [Edit]({{quicklink}}) the current workflow `.github/workflows/my-workflow.yml` to have he following contents:
+1. [Edit]({{quicklink}}) the current workflow `.github/workflows/my-workflow.yml` to have the following contents:
 
    ```yaml
    name: Learning GitHub Script

@@ -20,7 +20,7 @@ Your repository can contain multiple **workflow** files that carry out a wide va
 
 📖 Read more about [workflows](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow#choosing-the-type-of-actions-for-your-workflow)
 
-### :keyboard: Activity: Respond to an issue when it get's opened
+### :keyboard: Activity: Respond to an issue when it gets opened
 
 1. Create a new workflow file titled `.github/workflows/my-workflow.yml` with the following contents:
    You can use [this quicklink]({{quicklink}}) to easily create this file
