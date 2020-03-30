@@ -19,8 +19,8 @@ before:
     columns:
       - Triage Backlog
       - Triage Complete
-    store: 
-      projectUrl: '{{ result.data.html_url }}'
+    store:
+      projectUrl: "{{ result.data.html_url }}"
   - type: createIssue
     title: Start here!
     body: 00_welcome-issue.md
@@ -142,22 +142,17 @@ steps:
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
-        action_id: projectBoard
         store:
           boardID: "%result.data.0.id%"
-
       - type: octokit
         method: projects.listColumns
-        # project_id: "%actions.projectBoard.data.0.id%"
         project_id: "%registration.store.boardID%"
-        action_id: listColumns
         store:
           columnID: "%result.data.0.id%"
       - type: respond
         with: 03_add-to-projects.md
         issue: "%registration.store.secondIssueNumber%"
         data:
-          # columnID: "%actions.listColumns.data.0.id%"
           columnID: "%registration.store.columnID%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
     #  new pull request
