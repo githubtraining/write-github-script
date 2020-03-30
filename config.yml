@@ -19,6 +19,8 @@ before:
     columns:
       - Triage Backlog
       - Triage Complete
+    store: 
+      projectUrl: '{{ result.data.html_url }}'
   - type: createIssue
     title: Start here!
     body: 00_welcome-issue.md
