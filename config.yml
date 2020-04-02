@@ -101,14 +101,24 @@ steps:
       - type: createReview
         body: 01_merge-workflow.md
         event: APPROVE
-        data:
-          actionsUrl: "%payload.repository.html_url%/actions%"
 
   - title: Merge your first pull request
     description: Make the workflow available to the repository by merging the pull request
     event: pull_request.closed
     link: "{{store.firstPullUrl}}"
     actions:
+      - type: gate
+        every: true
+        gates:
+          - left: '{{ payload.pull_request.number }}'
+            operator: ===
+            right: '{{ store.firstPullNumber }}'
+          - left: '{{ payload.pull_request.merged }}'
+        else:
+          - type: respond
+            with: e-generic.md
+            data:
+              expected: merge pull request '{{ store.firstPullNumber }}'
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
