@@ -11,8 +11,24 @@ tags:
 template:
   repo: write-github-script-template
   name: write-github-script
+
+# Repo artifacts
+#       repositoryUrl
+# 1. (Issue) Start here!
+#       welcomeIssueUrl
+#       welcomeIssueNumber
+# 2. (PR) Learner created PR, "Automate issue response" possibly
+#       firstPullNumber
+#       firstPullUrl
+# 3. (Issue) Create an issue comment with GitHub Script
+#       secondIssueNumber
+#       secondIssueUrl
+
 before:
   - type: updateBranchProtection
+    store:
+      repositoryUrl: '{{ payload.repository.html_url }}'
+      actionsUrl: '{{ payload.repository.html_url }}/actions'
   - type: createProjectBoard
     name: Learning Lab Project Board
     description: >-
@@ -29,8 +45,8 @@ before:
       welcomeIssueUrl: "%result.data.html_url%"
       welcomeIssueNumber: "%result.data.number%"
     data:
-      quicklink: "%payload.repository.html_url%/new/master?filename=.github/workflows/my-workflow.yml"
-      actionsUrl: "%payload.repository.html_url%/actions/new"
+      quicklink: "{{ store.repositoryUrl }}/new/master?filename=.github/workflows/my-workflow.yml"
+      actionsUrl: "{{ store.repositoryUrl }}/actions/new"
     comments:
       - 00_explain-gh-script.md
       - 00_octokit-comparison.md
@@ -44,28 +60,16 @@ steps:
       - pull_request.edited
     link: "{{store.welcomeIssueUrl}}"
     actions:
-      - type: gate
-        left: "%payload.pull_request.title%"
-        store:
-          firstPullNumber: "%payload.pull_request.number%"
-          firstPullUrl: "%payload.pull_request.html_url%"
-        operator: ===
-        right: Automate issue responses
-
-        # if those statments FAIL... do this
-        else:
-          - type: respond
-            with: e-rename-pr.md
-            data:
-              title: Automate issue responses
-        # if those gates === true Then do this stuff
-      #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
       - type: getTree
         action_id: isInTree
         recursive: true
         sha: "%payload.pull_request.head.sha%"
+        store:
+          firstPullNumber: "%payload.pull_request.number%"
+          firstPullUrl: "%payload.pull_request.html_url%"
+
       # check for a file in a tree
       - type: gate
         left: "%actions.isInTree.data.tree%"

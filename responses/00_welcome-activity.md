@@ -49,14 +49,18 @@ Your repository can contain multiple **workflow** files that carry out a wide va
    ```
 
 1. Commit the workflow to a new branch.
-1. Create a pull request titled **Automate issue responses**.
+1. Create a pull request. I suggest a title like **Automate issue responses**.
 1. Supply the pull request body content and click `Create pull request`.
 
-_It is important to place meaningful content into the body of the pull requests you create throughout this course. This repository will stay with you long after you complete the course. It is advisable that you use the body of the pull requests you create as a way to take long lived notes about thing you want to remember._
+<details><summary>About pull pull request titles and content</summary>
 
-<details><summary>Suggested body content</summary>
+It is important to place meaningful content into the body of the pull requests you create. This repository will stay with you long after you complete the course. We recommend you use the body of your pull requests as a way to take long lived notes about thing you want to remember.
 
-`Workflow files are the recipe for task automation. This is where actions are placed if I want to use them for a task.`
+In practice, good pull request titles and content convey information efficiently to your collaborators.
+
+You can fill the body of this pull request with the following recommended content:
+
+> Workflow files are the recipe for task automation. This is where actions are placed if I want to use them for a task.
 
 </details>
 
