@@ -95,12 +95,12 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: "%registration.store.welcomeIssueNumber%"
+        issue: "%store.welcomeIssueNumber%"
         with: new-pull-request.md
         data:
           pullurl: '{{ store.firstPullUrl }}'
       - type: closeIssue
-        issue: "%registration.store.welcomeIssueNumber%"
+        issue: "%store.welcomeIssueNumber%"
       - type: createReview
         body: 01_merge-workflow.md
         event: APPROVE
@@ -130,7 +130,7 @@ steps:
           secondIssueUrl: "%result.data.html_url%"
       - type: respond
         with: new-issue.md
-        issue: "%registration.store.firstPullNumber%"
+        issue: "%store.firstPullNumber%"
         data:
           issueUrl: '{{ store.secondIssueUrl }}'
 
@@ -146,13 +146,13 @@ steps:
         right: "github-actions[bot]"
         else:
           - type: respond
-            issue: "%registration.store.secondIssueNumber%"
+            issue: "%store.secondIssueNumber%"
             with: debug.md
             data:
               debug: "%payload%"
       - type: respond
         with: 03_workflow-success.md
-        issue: "%registration.store.secondIssueNumber%"
+        issue: "%store.secondIssueNumber%"
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
@@ -161,14 +161,14 @@ steps:
           boardID: "%result.data.0.id%"
       - type: octokit
         method: projects.listColumns
-        project_id: "%registration.store.boardID%"
+        project_id: "%store.boardID%"
         store:
           columnID: "%result.data.0.id%"
       - type: respond
         with: 03_add-to-projects.md
-        issue: "%registration.store.secondIssueNumber%"
+        issue: "%store.secondIssueNumber%"
         data:
-          columnID: "%registration.store.columnID%"
+          columnID: "%store.columnID%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
     #  new pull request
   - title: Modify your workflow file
@@ -211,12 +211,12 @@ steps:
         # End filepath verification
         #######################################################
       - type: respond
-        issue: "%registration.store.secondIssueNumber%"
+        issue: "%store.secondIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%registration.store.secondPullUrl%"
+          pullUrl: "%store.secondPullUrl%"
       - type: closeIssue
-        issue: "%registration.store.secondIssueNumber%"
+        issue: "%store.secondIssueNumber%"
       - type: createReview
         body: 04_merge-workflow.md
         event: APPROVE
@@ -237,9 +237,9 @@ steps:
           thirdIssueNumber: "%result.data.number%"
       - type: respond
         with: new-issue.md
-        issue: "%registration.store.secondPullNumber%"
+        issue: "%store.secondPullNumber%"
         data:
-          issueURL: "%registration.store.thirdIssueUrl%"
+          issueURL: "%store.thirdIssueUrl%"
 
   - title: Break your workflow into multiple steps
     description: Separate the workflow concerns by adding more steps
@@ -252,7 +252,7 @@ steps:
         right: "github-actions[bot]"
         else:
           - type: respond
-            issue: "%registration.store.secondIssueNumber%"
+            issue: "%store.secondIssueNumber%"
             with: debug.md
             data:
               debug: "%payload%"
@@ -267,12 +267,12 @@ steps:
         action_id: listColumns
       - type: respond
         with: 06_steps-overview.md
-        issue: "%registration.store.thirdIssueNumber%"
+        issue: "%store.thirdIssueNumber%"
         data:
           projectTab: "%payload.repository.html_url%/projects/1"
       - type: respond
         with: 06_steps-activity.md
-        issue: "%registration.store.thirdIssueNumber%"
+        issue: "%store.thirdIssueNumber%"
         data:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
@@ -310,12 +310,12 @@ steps:
         project_id: "%actions.projectBoard.data.0.id%"
         action_id: listColumns
       - type: respond
-        issue: "%registration.store.thirdIssueNumber%"
+        issue: "%store.thirdIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%registration.store.thirdPullUrl%"
+          pullUrl: "%store.thirdPullUrl%"
       - type: closeIssue
-        issue: "%registration.store.thirdIssueNumber%"
+        issue: "%store.thirdIssueNumber%"
       - type: respond
         with: 07_explain-node.md
       - type: respond
@@ -359,9 +359,9 @@ steps:
 
       - type: respond
         with: new-issue.md
-        issue: "%registration.store.thirdPullNumber%"
+        issue: "%store.thirdPullNumber%"
         data:
-          issueURL: "%registration.store.fourthIssueUrl%"
+          issueURL: "%store.fourthIssueUrl%"
 
   - title: Another workflow run
     description: Observe the results of an enhanced workflow run
@@ -377,10 +377,10 @@ steps:
             with: e-action-result.md
       - type: respond
         with: 09_workflow-completed.md
-        issue: "%registration.store.fourthIssueNumber%"
+        issue: "%store.fourthIssueNumber%"
       - type: respond
         with: 09_issue-activity.md
-        issue: "%registration.store.fourthIssueNumber%"
+        issue: "%store.fourthIssueNumber%"
         data:
           quicklink: "%payload.repository.html_url%/issues/new"
 
