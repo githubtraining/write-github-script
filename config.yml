@@ -107,7 +107,7 @@ steps:
         issue: "%store.welcomeIssueNumber%"
         with: new-pull-request.md
         data:
-          pullurl: '{{ store.firstPullUrl }}'
+          pullUrl: '{{ store.firstPullUrl }}'
       - type: closeIssue
         issue: "%store.welcomeIssueNumber%"
       - type: createReview
