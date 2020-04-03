@@ -260,7 +260,7 @@ steps:
         with: new-issue.md
         issue: "%store.secondPullNumber%"
         data:
-          issueURL: "%store.thirdIssueUrl%"
+          issueUrl: "%store.thirdIssueUrl%"
 
   - title: Break your workflow into multiple steps
     description: Separate the workflow concerns by adding more steps
@@ -393,7 +393,7 @@ steps:
         with: new-issue.md
         issue: "%store.thirdPullNumber%"
         data:
-          issueURL: "%store.fourthIssueUrl%"
+          issueUrl: "%store.fourthIssueUrl%"
 
   - title: Another workflow run
     description: Observe the results of an enhanced workflow run
