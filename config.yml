@@ -26,6 +26,15 @@ template:
 # 4. (PR) Learner created PR, "Add issues to project board" possibly
 #       secondPullNumber
 #       secondPullUrl
+# 5. (Issue) Comment and triage with GitHub Script
+#       thirdIssueUrl
+#       thirdIssueNumber
+# 6. (PR) Learner created PR, "Create better comments" possibly
+#       thirdPullNumber
+#       thirdPullUrl
+# 7. (Issue) It's alive!
+#       fourthIssueUrl
+#       fourthIssueNumber
 
 before:
   - type: updateBranchProtection
@@ -228,6 +237,18 @@ steps:
     event: pull_request.closed
     link: "{{ store.secondPullUrl }}"
     actions:
+      - type: gate
+        every: true
+        gates:
+          - left: '{{ payload.pull_request.number }}'
+            operator: ===
+            right: '{{ store.secondPullNumber }}'
+          - left: '{{ payload.pull_request.merged }}'
+        else:
+          - type: respond
+            with: e-generic.md
+            data:
+              expected: merge pull request '{{ store.secondPullNumber }}'
       - type: createIssue
         title: Comment and triage with GitHub Script
         body: 05_workflow-triggered.md
@@ -287,24 +308,14 @@ steps:
       - pull_request.edited
     link: "{{store.thirdPullUrl}}"
     actions:
-      - type: gate
-        store:
-          thirdPullNumber: "%payload.pull_request.number%"
-          thirdPullUrl: "%payload.pull_request.html_url%"
-        left: "%payload.pull_request.title%"
-        operator: ===
-        right: Create better comments
-        # if those statments FAIL... do this
-        else:
-          - type: respond
-            with: e-rename-pr.md
-            data:
-              title: Create better comments
       - type: octokit
         method: projects.listForRepo
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
         action_id: projectBoard
+        store:
+          thirdPullNumber: "%payload.pull_request.number%"
+          thirdPullUrl: "%payload.pull_request.html_url%"
       - type: octokit
         method: projects.listColumns
         project_id: "%actions.projectBoard.data.0.id%"
@@ -329,6 +340,15 @@ steps:
     event: pull_request.synchronize
     link: "{{store.thirdPullUrl}}"
     actions:
+      - type: gate
+        left: '{{ payload.pull_request.number }}'
+        operator: ===
+        right: '{{ store.thirdPullNumber }}'
+        else:
+          - type: respond
+            with: e-generic.md
+            data:
+              expected: push a commit to '{{ store.thirdPullNumber }}'
       - type: createReview
         body: 08_merge-workflow.md
         event: APPROVE
@@ -338,6 +358,18 @@ steps:
     event: pull_request.closed
     link: "{{store.thirdPullUrl}}"
     actions:
+      - type: gate
+        every: true
+        gates:
+          - left: '{{ payload.pull_request.number }}'
+            operator: ===
+            right: '{{ store.thirdPullNumber }}'
+          - left: '{{ payload.pull_request.merged }}'
+        else:
+          - type: respond
+            with: e-generic.md
+            data:
+              expected: merge pull request '{{ store.thirdPullNumber }}'
       - type: octokit
         action_id: triggerIssue
         method: issues.create
