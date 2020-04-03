@@ -23,6 +23,9 @@ template:
 # 3. (Issue) Create an issue comment with GitHub Script
 #       secondIssueNumber
 #       secondIssueUrl
+# 4. (PR) Learner created PR, "Add issues to project board" possibly
+#       secondPullNumber
+#       secondPullUrl
 
 before:
   - type: updateBranchProtection
@@ -95,7 +98,7 @@ steps:
         issue: "%registration.store.welcomeIssueNumber%"
         with: new-pull-request.md
         data:
-          pullUrl: "%registration.store.firstPullUrl%"
+          pullurl: '{{ store.firstPullUrl }}'
       - type: closeIssue
         issue: "%registration.store.welcomeIssueNumber%"
       - type: createReview
@@ -129,7 +132,7 @@ steps:
         with: new-issue.md
         issue: "%registration.store.firstPullNumber%"
         data:
-          issueURL: "%registration.store.secondIssueUrl%"
+          issueUrl: '{{ store.secondIssueUrl }}'
 
   - title: Add another GitHub Script action
     description: Use GitHub Script to place this issue into a project board
@@ -175,22 +178,6 @@ steps:
       - pull_request.edited
     link: "{{ store.secondIssueUrl }}"
     actions:
-      - type: gate
-        store:
-          secondPullNumber: "%payload.pull_request.number%"
-          secondPullUrl: "%payload.pull_request.html_url%"
-        left: "%payload.pull_request.title%"
-        operator: ===
-
-        right: Add issues to project board
-
-        # if those statments FAIL... do this
-        else:
-          - type: respond
-            with: e-rename-pr.md
-            data:
-              title: Add issues to project board
-        # if those gates === true Then do this stuff
       #######################################################
       # Validate the filepath for the my-workflow.yml file
       # get tree
@@ -198,6 +185,9 @@ steps:
         action_id: isInTree
         recursive: true
         sha: "%payload.pull_request.head.sha%"
+        store:
+          secondPullNumber: "%payload.pull_request.number%"
+          secondPullUrl: "%payload.pull_request.html_url%"
       # check for a file in a tree
       - type: gate
         left: "%actions.isInTree.data.tree%"

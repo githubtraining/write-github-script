@@ -50,7 +50,7 @@ Your repository can contain multiple **workflow** files that carry out a wide va
 
 1. Commit the workflow to a new branch.
 1. Create a pull request. I suggest a title like **Automate issue responses**.
-1. Supply the pull request body content and click `Create pull request`.
+1. Supply the pull request body content and click **Create pull request**.
 
 <details><summary>About pull pull request titles and content</summary>
 
