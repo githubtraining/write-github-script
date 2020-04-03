@@ -2,7 +2,7 @@
 
 We will make the following changes to the current workflow file:
 
-- Name each step so we can easily keep track of it in the [actions tab]({{actionsTab}})
+- Name each step so we can easily keep track of it in the [actions tab]({{store.actionsUrl}})
 - Use expressions to determine `if` a step should execute
 
 ### :keyboard: Activity: Add newly opened issue to project board

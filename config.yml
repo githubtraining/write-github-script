@@ -14,6 +14,7 @@ template:
 
 # Repo artifacts
 #       repositoryUrl
+#       actionsUrl
 # 1. (Issue) Start here!
 #       welcomeIssueUrl
 #       welcomeIssueNumber
@@ -299,7 +300,6 @@ steps:
           listCol: "%actions.listColumns.data%"
           columnID: "%actions.listColumns.data.0.id%"
           quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
-          actionsTab: "%paylaod.repository.html_url%/actions"
 
   - title: Create better comments
     description: Use a templated repsonse as the comment body
