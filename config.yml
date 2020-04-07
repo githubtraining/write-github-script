@@ -135,7 +135,7 @@ steps:
           - type: respond
             with: e-generic.md
             data:
-              expected: merge pull request '{{ store.firstPullNumber }}'
+              expected: 'merge pull request #{{ store.firstPullNumber }}'
       - type: createIssue
         title: Create an issue comment with GitHub Script
         body: 02_workflow-triggered.md
@@ -253,7 +253,7 @@ steps:
           - type: respond
             with: e-generic.md
             data:
-              expected: merge pull request '{{ store.secondPullNumber }}'
+              expected: 'merge pull request #{{ store.secondPullNumber }}'
       - type: createIssue
         title: Comment and triage with GitHub Script
         body: 05_workflow-triggered.md
@@ -352,7 +352,7 @@ steps:
           - type: respond
             with: e-generic.md
             data:
-              expected: push a commit to '{{ store.thirdPullNumber }}'
+              expected: 'push a commit to #{{ store.thirdPullNumber }}'
       - type: createReview
         body: 08_merge-workflow.md
         event: APPROVE
@@ -373,7 +373,7 @@ steps:
           - type: respond
             with: e-generic.md
             data:
-              expected: merge pull request '{{ store.thirdPullNumber }}'
+              expected: 'merge pull request #{{ store.thirdPullNumber }}'
       - type: octokit
         action_id: triggerIssue
         method: issues.create
