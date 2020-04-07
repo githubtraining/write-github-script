@@ -138,6 +138,8 @@ steps:
         store:
           secondIssueNumber: "%result.data.number%"
           secondIssueUrl: "%result.data.html_url%"
+        data:
+          workflowEditUrl: '{{ repoUrl }}/edit/master/.github/workflows/my-workflow.yml'
       - type: respond
         with: new-issue.md
         issue: "%store.firstPullNumber%"
