@@ -15,6 +15,8 @@ template:
 # Repo artifacts
 #       repositoryUrl
 #       actionsUrl
+#       workflowEditUrl
+#       branchSettingsUrl
 # 1. (Issue) Start here!
 #       welcomeIssueUrl
 #       welcomeIssueNumber
@@ -138,7 +140,6 @@ steps:
         store:
           secondIssueNumber: "%result.data.number%"
           secondIssueUrl: "%result.data.html_url%"
-        data:
           workflowEditUrl: '{{ repoUrl }}/edit/master/.github/workflows/my-workflow.yml'
           branchSettingsUrl: '{{ repoUrl }}/settings/branches'
       - type: respond
@@ -383,6 +384,17 @@ steps:
           ## Great Job so far!  
 
           Like before, now we have to wait for the workflow to run so that we can see the results.  
+
+          <details>
+            <summary>Workflow not running? Click here for some troubleshooting.</summary>
+
+          Try the following troubleshooting steps:
+          1. Click on the [Actions tab]({{ store.actionsUrl }}) to see the status of your workflow run. See [Managing a workflow run](https://help.github.com/en/actions/configuring-and-managing-workflows/managing-a-workflow-run) on GitHub Help for more information.
+          1. Edit your [workflow file]( {{ store.workflowEditUrl }}) and look for errors in the linter built into the browser.
+          1. Look for the [workflow trigger](https://help.github.com/en/actions/reference/events-that-trigger-workflows) and ensure you are performing an action that triggers that workflow.
+
+          If you need to make changes to your code, remove the [master branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `master` branch.
+          </details>
 
           ---
 
