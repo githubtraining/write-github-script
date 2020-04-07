@@ -44,8 +44,8 @@ before:
     store:
       repositoryUrl: '{{ payload.repository.html_url }}'
       actionsUrl: '{{ payload.repository.html_url }}/actions'
-      workflowEditUrl: '{{ repoUrl }}/edit/master/.github/workflows/my-workflow.yml'
-      branchSettingsUrl: '{{ repoUrl }}/settings/branches'
+      workflowEditUrl: '{{ payload.repository.html_url }}/edit/master/.github/workflows/my-workflow.yml'
+      branchSettingsUrl: '{{ payload.repository.html_url }}/settings/branches'
   - type: createProjectBoard
     name: Learning Lab Project Board
     description: >-

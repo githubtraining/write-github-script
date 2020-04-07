@@ -24,6 +24,7 @@ Try the following troubleshooting steps:
 
 If you need to make changes to your code, remove the [master branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `master` branch.
 </details>
+
 ---
 
 I'll respond in this issue after your workflow runs!
