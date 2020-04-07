@@ -44,6 +44,8 @@ before:
     store:
       repositoryUrl: '{{ payload.repository.html_url }}'
       actionsUrl: '{{ payload.repository.html_url }}/actions'
+      workflowEditUrl: '{{ repoUrl }}/edit/master/.github/workflows/my-workflow.yml'
+      branchSettingsUrl: '{{ repoUrl }}/settings/branches'
   - type: createProjectBoard
     name: Learning Lab Project Board
     description: >-
@@ -140,8 +142,6 @@ steps:
         store:
           secondIssueNumber: "%result.data.number%"
           secondIssueUrl: "%result.data.html_url%"
-          workflowEditUrl: '{{ repoUrl }}/edit/master/.github/workflows/my-workflow.yml'
-          branchSettingsUrl: '{{ repoUrl }}/settings/branches'
       - type: respond
         with: new-issue.md
         issue: "%store.firstPullNumber%"
