@@ -20,7 +20,7 @@ Okay, that doesn't seem so hard. Now that we know how to do it with Octokit let'
 ```yaml
 - uses: actions/github-script@0.8.0
   with:
-    github-token: ${{secrets.GITHUB_TOKEN}}
+    github-token: {% raw %}${{secrets.GITHUB_TOKEN}}{% endraw %}
     script: |
     github.issues.createComment({
         issue_number: context.issue.number,
@@ -51,7 +51,7 @@ Again, that's not too hard at all. Now let's do the same thing, only using the G
 ```yml
 - uses: actions/github-script@0.8.0
   with:
-    github-token: ${{secrets.GITHUB_TOKEN}}
+    github-token: {% raw %}${{secrets.GITHUB_TOKEN}}{% endraw %}
     script: |
     github.pull.create({
         repo: github.context.repo.repo,
