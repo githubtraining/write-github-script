@@ -1,6 +1,6 @@
 # Let's add a card to a project board
 
-We have added a project board to this repository for you. We will use this board, named **Learning Lab Project Board**, to add cards to when a new issue is created in your repository!
+We have added [a project board]({{ store.projectUrl }}) to this repository for you. We will use this board, named **Learning Lab Project Board**, to add cards to when a new issue is created in your repository!
 
 Like creating comments and opening pull requests, octokit/rest.js can be used for many more types of interactions. Managing GitHub Projects makes that list!
 
@@ -45,9 +45,11 @@ We've gone ahead and done this on our end of things so that we could give you th
    ```
 
 2. Commit the workflow to a new branch.
-3. Create a pull request titled **Update my-workflow.yml**.
-4. Supply the pull request body content and click `Create pull request`.
+3. Create a pull request, I suggest the title **Add issues to project board**.
+4. Supply the pull request body content and click **Create pull request**.
 
 ---
+
+I am waiting for you to create a new pull request before moving on.
 
 I'll respond in the new pull request when I detect it has been created.

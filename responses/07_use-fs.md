@@ -55,4 +55,6 @@ We will make the following changes to the current workflow file:
 
 ---
 
+I am waiting for you to commit the desired changes to this branch before moving on.
+
 I'll respond once you've committed the changes to this branch

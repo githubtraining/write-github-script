@@ -8,12 +8,12 @@ Let's go ahead and do this now.
 
 ### :keyboard: Activity: Merge the workflow
 
-When you are ready, merge this pull request.
+1.  Merge this pull request.
 
 ---
 
-Once you have merged this pull request I will open a new issue so we can see this workflow in action!
+I am waiting for you to merge this pull request before moving on.
 
-Oh, I'll also be responding to you from that issue!
+Once you have merged this pull request I will open a new issue so we can see this workflow in action!
 
 <details><summary>Trouble merging?</summary>Try refreshing the page!</details>

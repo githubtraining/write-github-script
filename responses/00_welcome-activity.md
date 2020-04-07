@@ -20,7 +20,7 @@ Your repository can contain multiple **workflow** files that carry out a wide va
 
 📖 Read more about [workflows](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow#choosing-the-type-of-actions-for-your-workflow)
 
-### :keyboard: Activity: Respond to an issue when it get's opened
+### :keyboard: Activity: Respond to an issue when it gets opened
 
 1. Create a new workflow file titled `.github/workflows/my-workflow.yml` with the following contents:
    You can use [this quicklink]({{quicklink}}) to easily create this file
@@ -49,17 +49,21 @@ Your repository can contain multiple **workflow** files that carry out a wide va
    ```
 
 1. Commit the workflow to a new branch.
-1. Create a pull request titled **Create my-workflow.yml**.
-1. Supply the pull request body content and click `Create pull request`.
+1. Create a pull request. I suggest a title like **Automate issue responses**.
+1. Supply the pull request body content and click **Create pull request**.
 
-_It is important to place meaningful content into the body of the pull requests you create throughout this course. This repository will stay with you long after you complete the course. It is advisable that you use the body of the pull requests you create as a way to take long lived notes about thing you want to remember._
+<details><summary>About pull pull request titles and content</summary>
 
-<details><summary>Suggested body content</summary>
+It is important to place meaningful content into the body of the pull requests you create. This repository will stay with you long after you complete the course. We recommend you use the body of your pull requests as a way to take long lived notes about thing you want to remember.
 
-`Workflow files are the recipe for task automation. This is where actions are placed if I want to use them for a task.`
+In practice, good pull request titles and content convey information efficiently to your collaborators.
+
+You can fill the body of this pull request with the following recommended content:
+
+> Workflow files are the recipe for task automation. This is where actions are placed if I want to use them for a task.
 
 </details>
 
 ---
 
-I'll respond in the new pull request when I detect it has been created.
+I am waiting for you to create a new pull request before moving on.
