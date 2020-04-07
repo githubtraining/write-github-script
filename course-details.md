@@ -13,7 +13,7 @@ In this course you will learn how to:
 
 ## What you'll build
 
-![Need Screenshot](https://user-images.githubusercontent.com/38021615/77487200-124f0000-6def-11ea-9622-813e5ed08d95.png)
+![A user opens an issue, the GitHub Actions bot responds with a welcome message. Another window shows that the issue has been added to a project board.](https://user-images.githubusercontent.com/16547949/78669798-cf8b2e80-78aa-11ea-885e-65e72fa22379.png)
 
 In this course you will automatically generate a comment on every new issue using a templated response. Additionally, if this issue is labeled as a bug it will be automatically added to the "needs triage" column of a project board.
 
