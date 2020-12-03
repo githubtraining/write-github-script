@@ -10,7 +10,7 @@ Try the following troubleshooting steps:
 1. Edit your [workflow file]( {{ store.workflowEditUrl }}) and look for errors in the linter built into the browser.
 1. Look for the [workflow trigger](https://help.github.com/en/actions/reference/events-that-trigger-workflows) and ensure you are performing an action that triggers that workflow.
 
-If you need to make changes to your code, remove the [master branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `master` branch.
+If you need to make changes to your code, remove the [main branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `main` branch.
 </details>
 
 ---

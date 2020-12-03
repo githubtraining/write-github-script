@@ -16,4 +16,4 @@ Anything you can do with Octokit can be accomplished with GitHub Script 🎉!
 
 _You may have noticed that when using GitHub Script the method call starts with `github` and not `octokit`. This is because GitHub Script provides you with a pre-authenticated octokit/rest.js client stored in a variable named `github`._
 
-_`context` is a reference to an object containing the [context of the current workflow run](https://github.com/actions/toolkit/blob/master/packages/github/src/context.ts)_
+_`context` is a reference to an object containing the [context of the current workflow run](https://github.com/actions/toolkit/blob/main/packages/github/src/context.ts)_
