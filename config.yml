@@ -44,7 +44,7 @@ before:
     store:
       repositoryUrl: '{{ payload.repository.html_url }}'
       actionsUrl: '{{ payload.repository.html_url }}/actions'
-      workflowEditUrl: '{{ payload.repository.html_url }}/edit/master/.github/workflows/my-workflow.yml'
+      workflowEditUrl: '{{ payload.repository.html_url }}/edit/main/.github/workflows/my-workflow.yml'
       branchSettingsUrl: '{{ payload.repository.html_url }}/settings/branches'
   - type: createProjectBoard
     name: Learning Lab Project Board
@@ -62,7 +62,7 @@ before:
       welcomeIssueUrl: "%result.data.html_url%"
       welcomeIssueNumber: "%result.data.number%"
     data:
-      quicklink: "{{ store.repositoryUrl }}/new/master?filename=.github/workflows/my-workflow.yml"
+      quicklink: "{{ store.repositoryUrl }}/new/main?filename=.github/workflows/my-workflow.yml"
       actionsUrl: "{{ store.repositoryUrl }}/actions/new"
     comments:
       - 00_explain-gh-script.md
@@ -183,7 +183,7 @@ steps:
         issue: "%store.secondIssueNumber%"
         data:
           columnID: "%store.columnID%"
-          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
+          quicklink: "%payload.repository.html_url%/edit/main/.github/workflows/my-workflow.yml"
     #  new pull request
   - title: Modify your workflow file
     description: Create a pull request to add changes to your workflow
@@ -237,7 +237,7 @@ steps:
         data:
           actionsUrl: "%payload.repository.html_url%/actions"
 
-  - title: Merge the updated workflow into the master branch
+  - title: Merge the updated workflow into the main branch
     description: Make the workflow available for use on the repository
     event: pull_request.closed
     link: "{{ store.secondPullUrl }}"
@@ -303,7 +303,7 @@ steps:
           listProj: "%actions.projectBoard.data%"
           listCol: "%actions.listColumns.data%"
           columnID: "%actions.listColumns.data.0.id%"
-          quicklink: "%payload.repository.html_url%/edit/master/.github/workflows/my-workflow.yml"
+          quicklink: "%payload.repository.html_url%/edit/main/.github/workflows/my-workflow.yml"
 
   - title: Create better comments
     description: Use a templated repsonse as the comment body
@@ -358,7 +358,7 @@ steps:
         event: APPROVE
 
   - title: Merge the updated workflow
-    description: Merge the worklow to the master branch
+    description: Merge the worklow to the main branch
     event: pull_request.closed
     link: "{{store.thirdPullUrl}}"
     actions:
@@ -393,7 +393,7 @@ steps:
           1. Edit your [workflow file]( {{ store.workflowEditUrl }}) and look for errors in the linter built into the browser.
           1. Look for the [workflow trigger](https://help.github.com/en/actions/reference/events-that-trigger-workflows) and ensure you are performing an action that triggers that workflow.
 
-          If you need to make changes to your code, remove the [master branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `master` branch.
+          If you need to make changes to your code, remove the [main branch protection]({{ store.branchSettingsUrl }}) and merge your changes into the `main` branch.
           </details>
 
           ---

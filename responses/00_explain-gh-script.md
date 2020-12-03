@@ -57,7 +57,7 @@ Again, that's not too hard at all. Now let's do the same thing, only using the G
         repo: github.context.repo.repo,
         owner: github.context.repo.owner,
         head: github.context.ref,
-        base: "master",
+        base: "main",
         title: "from my action",
         body: "## I totally used GitHub Script to pull this off 🔥"
     })
