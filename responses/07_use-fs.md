@@ -1,11 +1,11 @@
-## Use the FS module to use a templated comment
+## Use a comment template from the repository
 
 We will make the following changes to the current workflow file:
 
 - Add the `actions/checkout` action so we can read the templated response file located at `.github/ISSUE_RESPONSES/comment.md`
 - Add JavaScript to use the Node.js File System module to place the contents of our templated response as the body of the issue comment.
 
-### :keyboard: Activity: Add newly opened issue to project board
+### :keyboard: Activity: Use the FS module to use a templated comment
 
 1. [Edit]({{quicklink}}) the current workflow to have the following contents:
 
